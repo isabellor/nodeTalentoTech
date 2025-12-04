@@ -47,11 +47,27 @@ export async function putProducto(req, res) {
 }
 
 export async function deleteProducto(req, res) {
-  const data = await deleteProductService(req.params.id);
+  const id = req.params.id;
+
+  if (!id) {
+    return res.status(400).json({ error: "Debe proveer un ID" });
+  }
+
+  const data = await deleteProductService(id);
+
+  if (!data) {
+    return res.status(404).json({ error: "Producto no encontrado" });
+  }
 
   if (data.error) {
     return res.status(500).json(data);
   }
 
-  res.json({ success: true });
+  res.json({ success: true, message: "Producto eliminado correctamente" });
 }
+
+
+
+
+
+
