@@ -5,7 +5,6 @@ import {
   collection,
   getDocs,
   addDoc,
-  updateDoc,
   deleteDoc,
 } from "firebase/firestore";
 
@@ -52,16 +51,6 @@ export async function agregarProducto(producto) {
   }
 }
 
-// ACTUALIZAR UN PRODUCTO
-export async function actualizarProducto(id, campos) {
-  try {
-    const ref = doc(db, "productos", id);
-    await updateDoc(ref, campos);
-    return { success: true };
-  } catch (error) {
-    return { error: true, message: "Error al actualizar producto", detail: error };
-  }
-}
 
 // ELIMINAR UN PRODUCTO
 export async function eliminarProducto(id) {
