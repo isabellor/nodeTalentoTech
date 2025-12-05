@@ -4,7 +4,7 @@ import productsRouter from './src/routes/products.routes.js';
 import authRouter from './src/routes/auth.routes.js';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -19,15 +19,15 @@ app.get('/', (req, res) => {
   res.send('Servidor OK');
 });
 
-//Middelware para rutas no encontradas
-app.use((req, res, next) => {
+// Middleware para rutas no encontradas
+app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
 
-// Middleware de manejo de errores generales
+// Middleware de errores generales
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json('Algo salió mal!');
+  res.status(500).json({ error: 'Algo salió mal!' });
 });
 
 app.listen(PORT, () => {
