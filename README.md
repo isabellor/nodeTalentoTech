@@ -86,3 +86,15 @@ Se puede usar Postman o el frontend interactivo para probar los endpoints.
 - Listo para ser extendido con nuevos endpoints o integraciones.
 
 
+## Autor
+
+Desarrollado como **Proyecto Final** del Curso Node.js de TalentoTech por Isabel Lorite
+
+---
+
+
+<div align="center">
+
+### ⭐ Si te fue útil, ¡no olvides dejar una estrella!
+
+**Hecho con ❤️ por Isabel Lorite**
