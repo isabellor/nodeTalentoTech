@@ -18,7 +18,11 @@ export async function getProductos(req, res) {
 // Obtener producto por ID
 export async function getProducto(req, res) {
   try {
-    const producto = await getProductByIdService(req.params.id);
+    const id = req.params.id?.trim();
+    if (!id) {
+      return res.status(400).send(JSON.stringify({ error: "Debe proporcionar un ID" }, null, 2));
+    }
+    const producto = await getProductByIdService(id);
     res.status(200).send(JSON.stringify(producto, null, 2));
   } catch (error) {
     res.status(error.status || 404).send(JSON.stringify({ error: error.message }, null, 2));
