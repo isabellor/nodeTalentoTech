@@ -12,7 +12,7 @@ export const getAllProductsService = async () => {
 
 // Obtener producto por ID
 export const getProductByIdService = async (id) => {
-  if (!id) throw { message: "Debe proporcionar un ID", status: 400 };
+  
 
   const producto = await obtenerProducto(id);
 
