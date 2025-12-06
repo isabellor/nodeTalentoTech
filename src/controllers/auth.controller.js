@@ -25,9 +25,13 @@ export async function login(req, res) {
     }
 
     // credenciales válidas, generar token
-    const token = tokenGenerator(default_user);
-
-    return res.status(200).json({ token });
+    try {
+      const token = tokenGenerator(default_user);
+      return res.status(200).json({ token });
+    } catch (error) {
+      console.error("Error generando token:", error);
+      return res.status(500).json({ error: "Error al generar token" });
+    }
 
   } catch (error) {
     console.error("Error en login:", error);

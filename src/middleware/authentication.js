@@ -4,6 +4,11 @@ import 'dotenv/config';
 const secret_key = process.env.JWT_SECRET_KEY;
 
 export const authentication = (req, res, next) => {
+  if (!secret_key) {
+    console.error("JWT_SECRET_KEY no configurado");
+    return res.status(500).json({ error: "Configuración del servidor inválida" });
+  }
+
   const authHeader = req.headers["authorization"];
 
   if (!authHeader) {

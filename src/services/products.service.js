@@ -5,60 +5,56 @@ import {
   eliminarProducto
 } from "../models/models.products.js";
 
-//obtener todos los productos
+// Obtener todos los productos
 export const getAllProductsService = async () => {
   return await obtenerProductos();
 };
 
-//obtener producto por id
+// Obtener producto por ID
 export const getProductByIdService = async (id) => {
-  if (!id) {
-    return { error: true, message: "Debe proporcionar un ID", status: 400 };
+  if (!id) throw { message: "Debe proporcionar un ID", status: 400 };
+
+  const producto = await obtenerProducto(id);
+
+  if (producto.error && producto.message === "Producto no encontrado") {
+    throw { message: producto.message, status: 404 };
   }
 
-  const data = await obtenerProducto(id);
-
-  if (data.error && data.message === "Producto no encontrado") {
-    return { error: true, message: data.message, status: 404 };
+  if (producto.error) {
+    throw { message: producto.message || "Error al obtener producto", status: 500 };
   }
 
-  if (data.error) {
-    return { error: true, message: data.message, status: 500 };
-  }
-
-  return data;
+  return producto;
 };
 
-//crear un nuevo producto
+// Crear un nuevo producto
 export const createProductService = async (productData) => {
   if (!productData || !productData.nombre || !productData.precio || !productData.stock) {
-    return { error: true, message: "Datos incompletos", status: 400 };
+    throw { message: "Datos incompletos", status: 400 };
   }
 
-  const data = await agregarProducto(productData);
+  const nuevoProducto = await agregarProducto(productData);
 
-  if (data.error) {
-    return { error: true, message: data.message, status: 500 };
+  if (nuevoProducto.error) {
+    throw { message: nuevoProducto.message || "Error al crear producto", status: 500 };
   }
 
-  return data;
+  return nuevoProducto;
 };
 
-//eliminar un producto por id
+// Eliminar un producto por ID
 export const deleteProductService = async (id) => {
-  if (!id) {
-    return { error: true, message: "Debe proporcionar un ID", status: 400 };
+  if (!id) throw { message: "Debe proporcionar un ID", status: 400 };
+
+  const resultado = await eliminarProducto(id);
+
+  if (resultado.error && resultado.message === "Producto no encontrado") {
+    throw { message: resultado.message, status: 404 };
   }
 
-  const data = await eliminarProducto(id);
-
-  if (data.error && data.message === "Producto no encontrado") {
-    return { error: true, message: data.message, status: 404 };
+  if (resultado.error) {
+    throw { message: resultado.message || "Error al eliminar producto", status: 500 };
   }
 
-  if (data.error) {
-    return { error: true, message: data.message, status: 500 };
-  }
-
-  return data;
+  return resultado;
 };

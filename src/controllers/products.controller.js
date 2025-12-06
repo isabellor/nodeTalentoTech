@@ -5,50 +5,42 @@ import {
   deleteProductService
 } from "../services/products.service.js";
 
-//obtener todos los productos
+// Obtener todos los productos
 export async function getProductos(req, res) {
-  const data = await getAllProductsService();
-
-  if (data.error) {
-    return res.status(500).json({ error: data.message });
+  try {
+    const productos = await getAllProductsService();
+    res.status(200).send(JSON.stringify(productos, null, 2)); // JSON bonito
+  } catch (error) {
+    res.status(error.status || 500).send(JSON.stringify({ error: error.message }, null, 2));
   }
-
-  res.json(data);
 }
 
-//obtener producto por id
+// Obtener producto por ID
 export async function getProducto(req, res) {
-  const id = req.params.id;
-
-  const data = await getProductByIdService(id);
-
-  if (data.error) {
-    return res.status(data.status).json({ error: data.message });
+  try {
+    const producto = await getProductByIdService(req.params.id);
+    res.status(200).send(JSON.stringify(producto, null, 2));
+  } catch (error) {
+    res.status(error.status || 404).send(JSON.stringify({ error: error.message }, null, 2));
   }
-
-  res.json(data);
 }
 
-//crear un nuevo producto
+// Crear un nuevo producto
 export async function postProducto(req, res) {
-  const data = await createProductService(req.body);
-
-  if (data.error) {
-    return res.status(data.status).json({ error: data.message });
+  try {
+    const nuevoProducto = await createProductService(req.body);
+    res.status(201).send(JSON.stringify(nuevoProducto, null, 2));
+  } catch (error) {
+    res.status(error.status || 500).send(JSON.stringify({ error: error.message }, null, 2));
   }
-
-  res.status(201).json(data);
 }
 
-//eliminar un producto por id
+// Eliminar un producto por ID
 export async function deleteProducto(req, res) {
-  const id = req.params.id;
-
-  const data = await deleteProductService(id);
-
-  if (data.error) {
-    return res.status(data.status).json({ error: data.message });
+  try {
+    await deleteProductService(req.params.id);
+    res.status(200).send(JSON.stringify({ success: true, message: "Producto eliminado correctamente" }, null, 2));
+  } catch (error) {
+    res.status(error.status || 404).send(JSON.stringify({ error: error.message }, null, 2));
   }
-
-  res.json({ success: true, message: "Producto eliminado correctamente" });
 }

@@ -1,64 +1,45 @@
 import { db } from "../data/data.js";
-import {
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  addDoc,
-  deleteDoc,
-} from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 
 // OBTENER UN PRODUCTO POR ID
 export async function obtenerProducto(id) {
-  try {
-    const docRef = doc(db, "productos", id);
-    const snap = await getDoc(docRef);
+  const ref = doc(db, "productos", id);
+  const snap = await getDoc(ref);
 
-    if (!snap.exists()) {
-      return { error: true, message: "Producto no encontrado" };
-    }
-
-    return { id: snap.id, ...snap.data() };
-  } catch (error) {
-    return { error: true, message: "Error al obtener producto", detail: error };
+  if (!snap.exists()) {
+    const error = new Error("Producto no encontrado");
+    error.status = 404;
+    throw error;
   }
+
+  return { id: snap.id, ...snap.data() };
 }
 
 // OBTENER TODOS LOS PRODUCTOS
 export async function obtenerProductos() {
-  try {
-    const ref = collection(db, "productos");
-    const snap = await getDocs(ref);
+  const ref = collection(db, "productos");
+  const snap = await getDocs(ref);
 
-    const productos = snap.docs.map((d) => ({
-      id: d.id,
-      ...d.data(),
-    }));
-
-    return productos;
-  } catch (error) {
-    return { error: true, message: "Error al obtener productos", detail: error };
-  }
+  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
 // AGREGAR UN PRODUCTO
 export async function agregarProducto(producto) {
-  try {
-    const ref = await addDoc(collection(db, "productos"), producto);
-    return { id: ref.id, ...producto };
-  } catch (error) {
-    return { error: true, message: "Error al agregar producto", detail: error };
-  }
+  const ref = await addDoc(collection(db, "productos"), producto);
+  return { id: ref.id, ...producto };
 }
-
 
 // ELIMINAR UN PRODUCTO
 export async function eliminarProducto(id) {
-  try {
-    const ref = doc(db, "productos", id);
-    await deleteDoc(ref);
-    return { success: true };
-  } catch (error) {
-    return { error: true, message: "Error al eliminar producto", detail: error };
+  const ref = doc(db, "productos", id);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    const error = new Error("Producto no encontrado");
+    error.status = 404;
+    throw error;
   }
+
+  await deleteDoc(ref);
+  return { success: true };
 }
