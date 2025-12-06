@@ -37,19 +37,21 @@ Todos los endpoints requieren autenticación JWT, excepto `/auth/login`.
 
 ## Estructura de Carpetas
 
+```plaintext
 node-talento-tech/
 ├─ src/
-│  ├─ controllers/   # Controladores de rutas
-│  ├─ services/      # Lógica de negocio y manejo de errores
-│  ├─ models/        # Acceso a Firestore
-│  ├─ routes/        # Definición de endpoints
-│  ├─ middleware/    # Middlewares, ej: autenticación JWT
-│  ├─ data/          # Configuración y conexión a Firestore
-│  └─ app.js         # Inicialización de Express y rutas
+│  ├─ controllers/     # Controladores de rutas
+│  ├─ services/        # Lógica de negocio y manejo de errores
+│  ├─ models/          # Acceso a Firestore
+│  ├─ routes/          # Definición de endpoints
+│  ├─ middleware/      # Middlewares, ej: autenticación JWT
+│  ├─ data/            # Configuración y conexión a Firestore
+│  └─ app.js           # Inicialización de Express y rutas
 ├─ package.json
-├─ .env              # Variables de entorno (JWT_SECRET, URL DB)
+├─ .env                # Variables de entorno (JWT_SECRET, URL DB)
 └─ README.md
 
+```
 
 ## Despliegue
 
